@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en-US" data-theme="light">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>How to Install Gitea on Ubuntu 20.04 - Hà Anh Tuấn - Blog</title>
+		<meta name="description" content="Hà Anh Tuấn - Blog">
+		<meta name="keywords" content="loremipsum">
+		<base href="http://localhost:4000" />
+		
+    	<meta content="2021-02-09T03:00:00+03:00" property="article:published_time">
+    	<meta content="http://localhost:4000/about/" property="article:author">
+  		
+		<meta property="og:site_name" content="Hà Anh Tuấn - Blog">
+		<meta property="og:type" content="article" />
+		<meta property="og:url" content="http://localhost:4000/how-to-install-gitea-on-ubuntu-20-04/"/>
+		<meta property="og:title" content="How to Install Gitea on Ubuntu 20.04 - Hà Anh Tuấn - Blog" />
+		<meta property="og:description" content="Hà Anh Tuấn - Blog" />
+		<meta property="og:image" content="http://localhost:4000/assets/images/favicon.png"/>
+		<meta name="twitter:card" content="summary"/>
+		<meta property="twitter:title" content="How to Install Gitea on Ubuntu 20.04 - Hà Anh Tuấn - Blog" />
+		<meta property="twitter:description" content="Hà Anh Tuấn - Blog" />
+		<meta property="twitter:image" content="http://localhost:4000/assets/images/favicon.png" />
+		<link rel="stylesheet" href="assets/css/highlight.css">
+		<link rel="stylesheet" href="assets/css/style.css">
+		<link rel="shortcut icon" href="assets/images/favicon.png" />
+		<link rel="alternate" type="application/atom+xml" title="Hà Anh Tuấn - Blog" href="http://localhost:4000/atom.xml">
+		<link rel="alternate" type="application/json" title="Hà Anh Tuấn - Blog" href="http://localhost:4000/feed.json" />
+		<link rel="sitemap" type="application/xml" title="sitemap" href="http://localhost:4000/sitemap.xml" />
+		<meta name="google-site-verification" content="XXX" />
+	</head>
+<body>
+<div class="container">
+	<div class="profile">
+		<a href="http://localhost:4000"><img src="assets/images/profile.jpg" class="profile-image"></a>
+		<div class="profile-about">
+			<h2 style="margin-bottom: 0; font-weight: 700;">Hà Anh Tuấn</h2>
+			
+				<a href="https://facebook.com/tuanictu97" target="_blank"><img src="assets/images/icon/facebook.svg" class="social-icon"></a>
+			
+			
+				<a href="https://twitter.com/tuanictu97" target="_blank"><img src="assets/images/icon/twitter.svg" class="social-icon"></a>
+			
+			
+				<a href="https://instagram.com/tuanict97" target="_blank"><img src="assets/images/icon/instagram.svg" class="social-icon"></a>
+			
+			
+			
+				<a href="https://github.com/tuanictu97" target="_blank"><img src="assets/images/icon/github.svg" class="social-icon"></a>
+			
+			
+				<a href="https://linkedin.com/in/tuanict97" target="_blank"><img src="assets/images/icon/linkedin.svg" class="social-icon"></a>
+			
+			<a href="about"><img src="assets/images/icon/me.svg" class="social-icon"></a>
+			<br>
+			Nothing !
+			<br>
+			<div class="mode" id="mode-switcher" onclick="toggleNightMode();">
+				<span></span>
+			</div>
+		</div>
+	</div>
+	
+<div class="post-header">
+	<div class="post-date">09.02.2021</div>
+	<div class="post-share">
+		Share:&nbsp; 
+		<a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/install-gitea-ubuntu" target="_blank"><img src="assets/images/icon/facebook.svg" class="social-icon"></a>
+		<a href="https://twitter.com/intent/tweet?source=tweetbutton&amp;original_referer=http://localhost:4000/install-gitea-ubuntu&amp;text=How to Install Gitea on Ubuntu 20.04 - http://localhost:4000/install-gitea-ubuntu" target="_blank"><img src="assets/images/icon/twitter.svg" class="social-icon"></a>
+		<a href="https://api.whatsapp.com/send?text=http://localhost:4000/install-gitea-ubuntu" target="_blank"><img src="assets/images/icon/whatsapp.svg" class="social-icon"></a>
+	</div>
+</div>
+
+<div class="blog-post-content">
+	<h1>How to Install Gitea on Ubuntu 20.04</h1>
+	<p>Gitea is a fast and easy-to-use self-hosted git server written in Go. It includes a repository file editor, project issue tracking, user management, notifications, built-in wiki, and much more.</p>
+
+<p>Gitea is a lightweight application and can be installed on low-powered systems. If you are searching for an alternative to Gitlab with a much smaller memory footprint and you don’t need all the bells and whistles that Gitlab offers, then you should give a try to Gitea.
+This article explains how to install and configure Gitea on Ubuntu 20.04.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<p>Gitea supports SQLite, PostgreSQL , and MySQL /MariaDB as database backends.</p>
+
+<p>SQLite is only recommended for small installations. Larger installations should use MySQL or PostgreSQL.</p>
+
+<p>We’ll use SQLite as the database for Gitea. If SQLite is not installed on your Ubuntu system, install it by entering the following commands as sudo user :</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update
+<span class="nb">sudo </span>apt <span class="nb">install </span>sqlite3
+</code></pre></div></div>
+
+<h2 id="installing-gitea">Installing Gitea</h2>
+<p>Gitea provides Docker images and can be installed from source, binary, and as a package. We’ll install Gitea from binary.</p>
+
+<h3 id="install-git">Install Git</h3>
+<p>The first step is to install Git on your server:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update
+<span class="nb">sudo </span>apt <span class="nb">install </span>git
+</code></pre></div></div>
+
+<p>Verify the installation by displaying the Git version:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git <span class="nt">--version</span>
+</code></pre></div></div>
+
+<h3 id="create-a-git-user">Create a Git user</h3>
+<p>Create a new system user which will run the Gitea application by typing:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>adduser <span class="se">\</span>
+   <span class="nt">--system</span> <span class="se">\</span>
+   <span class="nt">--shell</span> /bin/bash <span class="se">\</span>
+   <span class="nt">--gecos</span> <span class="s1">'Git Version Control'</span> <span class="se">\</span>
+   <span class="nt">--group</span> <span class="se">\</span>
+   <span class="nt">--disabled-password</span> <span class="se">\</span>
+   <span class="nt">--home</span> /home/git <span class="se">\</span>
+   git
+</code></pre></div></div>
+
+<h3 id="download-gitea-binary">Download Gitea binary</h3>
+<p>Head over to the Gitea Download page and download the latest binary for your architecture. At the time of writing, the latest version is 1.10.2. If there is a new version available, change the VERSION variable in the command below.
+Use wget to download the Gitea binary in the /tmp directory:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">VERSION</span><span class="o">=</span>1.14.1
+<span class="nb">sudo </span>wget <span class="nt">-O</span> /tmp/gitea https://dl.gitea.io/gitea/<span class="k">${</span><span class="nv">VERSION</span><span class="k">}</span>/gitea-<span class="k">${</span><span class="nv">VERSION</span><span class="k">}</span><span class="nt">-linux-amd64</span>
+</code></pre></div></div>
+
+<p>You can run the gitea binary from any location. We’ll follow the convention and move the binary to the /usr/local/bin directory:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo mv</span> /tmp/gitea /usr/local/bin
+<span class="nb">sudo chmod</span> +x /usr/local/bin/gitea
+</code></pre></div></div>
+
+<p>Run the commands below to create the directories and set the required permissions and ownership :</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo mkdir</span> <span class="nt">-p</span> /var/lib/gitea/<span class="o">{</span>custom,data,log<span class="o">}</span>
+<span class="nb">sudo chown</span> <span class="nt">-R</span> git:git /var/lib/gitea/
+<span class="nb">sudo chmod</span> <span class="nt">-R</span> 750 /var/lib/gitea/
+<span class="nb">sudo mkdir</span> /etc/gitea
+<span class="nb">sudo chown </span>root:git /etc/gitea
+<span class="nb">sudo chmod </span>770 /etc/gitea
+</code></pre></div></div>
+
+<h3 id="run-gitea-as-a-service">Run gitea as a Service</h3>
+<p>You can run Gitea as service, using either systemd or supervisor. The steps below tested on Ubuntu 20.04, but those should work on any Linux distributions (with little modification).</p>
+<h4 id="using-systemd">Using systemd</h4>
+<p>We’ll run Gitea as a systemd service.</p>
+
+<p>Download the sample systemd unit file to the /etc/systemd/system directory by typing:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>wget https://raw.githubusercontent.com/go-gitea/gitea/main/contrib/systemd/gitea.service <span class="nt">-P</span> /etc/systemd/system/
+</code></pre></div></div>
+
+<p>You don’t need to edit the file, it is configured to match our setup.
+Enable and start the Gitea service:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl daemon-reload
+<span class="nb">sudo </span>systemctl <span class="nb">enable</span> <span class="nt">--now</span> gitea
+</code></pre></div></div>
+
+<p>Verify that Gitea is running:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl status gitea
+</code></pre></div></div>
+
+<h4 id="using-supervisor">Using supervisor</h4>
+<p>Install supervisor by running below command in terminal:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>supervisor
+</code></pre></div></div>
+
+<p>Create a log dir for the supervisor logs:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># assuming Gitea is installed in /home/git/gitea/</span>
+<span class="nb">mkdir</span> /home/git/gitea/log/supervisor
+</code></pre></div></div>
+
+<p>Append the configuration from the sample supervisord config to /etc/supervisor/supervisord.conf.</p>
+
+<p>Using your favorite editor, change the user (git) and home (/home/git) settings to match the deployment environment. Change the PORT or remove the -p flag if default port is used.</p>
+
+<p>Lastly enable and start supervisor at boot:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl <span class="nb">enable </span>supervisor
+<span class="nb">sudo </span>systemctl start supervisor
+</code></pre></div></div>
+
+<p>If you have systemd version 220 or later, you can enable and immediately start supervisor by:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl <span class="nb">enable </span>supervisor <span class="nt">--now</span>
+</code></pre></div></div>
+<p>Good luck =)) !</p>
+
+</div>
+<div class="tags-container">
+	
+		<a href="http://localhost:4000/tags/#lorem" class="post-tag">lorem</a>, 
+	
+		<a href="http://localhost:4000/tags/#ipsum" class="post-tag">ipsum</a>
+	
+</div>
+<div class="navigation">
+	
+		<a class="prev" href="/how-to-set-up-a-reverse-proxy-step-by-steps-for-nginx-and-apache/">< How to Set up a Reverse Proxy (Step-By-Steps for Nginx and Apache)</a>
+	 
+</div>
+
+	<section class="comment-area w-100">
+		<div class="comment-wrapper">
+			<div id="disqus_thread" class="article-comments"></div>
+			<script>
+			(function() {
+			var d = document, s = d.createElement('script');
+			s.src = '//XXX.disqus.com/embed.js';
+			s.setAttribute('data-timestamp', +new Date());
+			(d.head || d.body).appendChild(s);
+			})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		</div>
+	</section>
+
+	<div class="footer">
+		<span> © 2021 - <a href="https://tuanictu97.github.io"><b>Hà Anh Tuấn</b></a></span>
+	</div>
+</div>
+	<script src="assets/js/ephesus.js"></script>
+	<script type="text/javascript">
+		if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+			document.documentElement.setAttribute('data-theme', 'dark');
+			document.getElementById('mode-switcher').classList.add('active');
+		}
+	</script>
+
+	
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-00"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-XXXXXXXX-00');
+    </script>
+	
+</body>
+</html>

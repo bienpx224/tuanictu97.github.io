@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en-US" data-theme="light">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>How to Set up a Reverse Proxy (Step-By-Steps for Nginx and Apache) - Hà Anh Tuấn - Blog</title>
+		<meta name="description" content="Hà Anh Tuấn - Blog">
+		<meta name="keywords" content="loremipsum">
+		<base href="http://localhost:4000" />
+		
+    	<meta content="2019-01-01T03:00:00+03:00" property="article:published_time">
+    	<meta content="http://localhost:4000/about/" property="article:author">
+  		
+		<meta property="og:site_name" content="Hà Anh Tuấn - Blog">
+		<meta property="og:type" content="article" />
+		<meta property="og:url" content="http://localhost:4000/how-to-set-up-a-reverse-proxy-step-by-steps-for-nginx-and-apache/"/>
+		<meta property="og:title" content="How to Set up a Reverse Proxy (Step-By-Steps for Nginx and Apache) - Hà Anh Tuấn - Blog" />
+		<meta property="og:description" content="Hà Anh Tuấn - Blog" />
+		<meta property="og:image" content="http://localhost:4000/assets/images/favicon.png"/>
+		<meta name="twitter:card" content="summary"/>
+		<meta property="twitter:title" content="How to Set up a Reverse Proxy (Step-By-Steps for Nginx and Apache) - Hà Anh Tuấn - Blog" />
+		<meta property="twitter:description" content="Hà Anh Tuấn - Blog" />
+		<meta property="twitter:image" content="http://localhost:4000/assets/images/favicon.png" />
+		<link rel="stylesheet" href="assets/css/highlight.css">
+		<link rel="stylesheet" href="assets/css/style.css">
+		<link rel="shortcut icon" href="assets/images/favicon.png" />
+		<link rel="alternate" type="application/atom+xml" title="Hà Anh Tuấn - Blog" href="http://localhost:4000/atom.xml">
+		<link rel="alternate" type="application/json" title="Hà Anh Tuấn - Blog" href="http://localhost:4000/feed.json" />
+		<link rel="sitemap" type="application/xml" title="sitemap" href="http://localhost:4000/sitemap.xml" />
+		<meta name="google-site-verification" content="XXX" />
+	</head>
+<body>
+<div class="container">
+	<div class="profile">
+		<a href="http://localhost:4000"><img src="assets/images/profile.jpg" class="profile-image"></a>
+		<div class="profile-about">
+			<h2 style="margin-bottom: 0; font-weight: 700;">Hà Anh Tuấn</h2>
+			
+				<a href="https://facebook.com/tuanictu97" target="_blank"><img src="assets/images/icon/facebook.svg" class="social-icon"></a>
+			
+			
+				<a href="https://twitter.com/tuanictu97" target="_blank"><img src="assets/images/icon/twitter.svg" class="social-icon"></a>
+			
+			
+				<a href="https://instagram.com/tuanict97" target="_blank"><img src="assets/images/icon/instagram.svg" class="social-icon"></a>
+			
+			
+			
+				<a href="https://github.com/tuanictu97" target="_blank"><img src="assets/images/icon/github.svg" class="social-icon"></a>
+			
+			
+				<a href="https://linkedin.com/in/tuanict97" target="_blank"><img src="assets/images/icon/linkedin.svg" class="social-icon"></a>
+			
+			<a href="about"><img src="assets/images/icon/me.svg" class="social-icon"></a>
+			<br>
+			Nothing !
+			<br>
+			<div class="mode" id="mode-switcher" onclick="toggleNightMode();">
+				<span></span>
+			</div>
+		</div>
+	</div>
+	
+<div class="post-header">
+	<div class="post-date">01.01.2019</div>
+	<div class="post-share">
+		Share:&nbsp; 
+		<a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/how-to-set-up-a-reverse-proxy-step-by-steps-for-nginx-and-apache" target="_blank"><img src="assets/images/icon/facebook.svg" class="social-icon"></a>
+		<a href="https://twitter.com/intent/tweet?source=tweetbutton&amp;original_referer=http://localhost:4000/how-to-set-up-a-reverse-proxy-step-by-steps-for-nginx-and-apache&amp;text=How to Set up a Reverse Proxy (Step-By-Steps for Nginx and Apache) - http://localhost:4000/how-to-set-up-a-reverse-proxy-step-by-steps-for-nginx-and-apache" target="_blank"><img src="assets/images/icon/twitter.svg" class="social-icon"></a>
+		<a href="https://api.whatsapp.com/send?text=http://localhost:4000/how-to-set-up-a-reverse-proxy-step-by-steps-for-nginx-and-apache" target="_blank"><img src="assets/images/icon/whatsapp.svg" class="social-icon"></a>
+	</div>
+</div>
+
+<div class="blog-post-content">
+	<h1>How to Set up a Reverse Proxy (Step-By-Steps for Nginx and Apache)</h1>
+	<p>A reverse proxy sits in front of a web server and receives all the requests before they reach the origin server. It works similarly to a forward proxy, except in this case it’s the web server using the proxy rather than the user or client. Reverse proxies are typically used to enhance performance, security, and reliability of the web server.</p>
+
+<p>Try a free demo
+For example, you can have a non-WordPress site hosted at example.com domain on Server A and have its blog running on WordPress at example.com/blog URL hosted on Server B. You can achieve this by adding a reverse proxy for the server hosting your primary site. You can configure the reverse proxy to redirect requests to the blog to a different server (e.g. a managed WordPress host like Kinsta).</p>
+
+<p>In this article, you’ll learn the basics of reverse proxy servers, how they work, what their major benefits are, and how you can use them to speed up and secure your WordPress site.</p>
+
+<h2 id="what-is-a-reverse-proxy">What Is a Reverse Proxy?</h2>
+
+<p>To understand what a reverse proxy server is, you need first to know its role and get familiar with all its related terms.</p>
+
+<p>When you browse the web normally by entering a domain name or clicking a link, your browser/device connects to the website’s server directly and starts downloading its resources.</p>
+
+<p><img src="/assets/images/how-internet-browsing-works-normally.png" alt="How Internet Browsing Works Normally" /></p>
+
+<p>If you want to anonymize your IP address from the websites you visit, then you can use a proxy server to send all your requests to it first. It’ll forward your requests to the DNS resolver and then download the website’s resources from its origin server.</p>
+
+<p>Afterward, it’ll pass on those resources to your device. This is called a forward proxy.</p>
+
+<p><img src="/assets/images/how-a-forward-proxy-server-works.png" alt="How a Fozrward Proxy Server Works" /></p>
+
+<h2 id="reverse-proxy-server-vs-forward-proxy-server">Reverse Proxy Server vs Forward Proxy Server</h2>
+<p>A reverse proxy server acts as a front for the origin server to maintain anonymity and enhance security, just like how a user/client can use a forward proxy to achieve the same. It ensures that no user or client communicates directly with the origin server.</p>
+
+<p><img src="/assets/images/how-a-reverse-proxy-server-works.png" alt="How a Reverse Proxy Server Works" /></p>
+
+<p>The difference between a forward proxy vs a reverse proxy is minor, but they work differently.</p>
+
+<p>Both can work together as there’s no overlap between their functioning. Typically, users/clients use a forward proxy, while origin servers use a reverse proxy.</p>
+
+<p><img src="/assets/images/how-a-reverse-proxy-server-works.png" alt="How a Reverse Proxy Server Works" /></p>
+
+<p>Since a server admin can control how the reverse proxy works, you can use it to enable many useful features.</p>
+
+<p>We’ll list all its benefits later in this post.</p>
+
+<h2 id="why-use-a-reverse-proxy">Why Use a Reverse Proxy?</h2>
+<p>Many businesses, especially large enterprises, use bespoke websites that are tailor-made to their unique needs and aren’t running on WordPress. Some examples include bank and insurance websites.</p>
+
+<p>In other cases, a business may host their site on an external service that doesn’t allow them to install any external software (e.g. WordPress). Usually, these are small to mid-sized retailers using an ecommerce platform such as Shopify.</p>
+
+<p>Since WordPress has robust CMS features, many businesses, including large enterprises with bespoke websites, may prefer to host their blogs using WordPress.</p>
+
+<p>One way to get around this problem is to install WordPress on the main website’s subdomain and structure the navigation menus such that users can switch easily between the main website and the blog.</p>
+
+<p><img src="/assets/images/how-a-reverse-proxy-server-works.png" alt="Subdomain vs Subdirectory for WordPress Blogs" /></p>
+
+<p>Since subdomains behave as a unique domain, it can affect your site’s SEO. Even though Google treats both subdomains and subdirectories equally, it takes more effort to optimize a website for search engine rankings if it’s hosted on a subdomain than if it’s hosted in a subdirectory.</p>
+
+<p>Google has reaffirmed that it treats both subdomains and subdirectories equally, but some SEO experts disagree with it. And even if it doesn’t affect the site’s SEO, a site hosted in a subdirectory is simply easier to maintain.</p>
+
+<p>That’s why you can use a reverse proxy to redirect requests to the site’s blog hosted on a separate server.</p>
+
+</div>
+<div class="tags-container">
+	
+		<a href="http://localhost:4000/tags/#lorem" class="post-tag">lorem</a>, 
+	
+		<a href="http://localhost:4000/tags/#ipsum" class="post-tag">ipsum</a>
+	
+</div>
+<div class="navigation">
+	 
+	<a class="next" href="/how-to-install-gitea-on-ubuntu-20-04/">How to Install Gitea on Ubuntu 20.04 ></a>
+
+</div>
+
+	<section class="comment-area w-100">
+		<div class="comment-wrapper">
+			<div id="disqus_thread" class="article-comments"></div>
+			<script>
+			(function() {
+			var d = document, s = d.createElement('script');
+			s.src = '//XXX.disqus.com/embed.js';
+			s.setAttribute('data-timestamp', +new Date());
+			(d.head || d.body).appendChild(s);
+			})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		</div>
+	</section>
+
+	<div class="footer">
+		<span> © 2021 - <a href="https://tuanictu97.github.io"><b>Hà Anh Tuấn</b></a></span>
+	</div>
+</div>
+	<script src="assets/js/ephesus.js"></script>
+	<script type="text/javascript">
+		if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+			document.documentElement.setAttribute('data-theme', 'dark');
+			document.getElementById('mode-switcher').classList.add('active');
+		}
+	</script>
+
+	
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-00"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-XXXXXXXX-00');
+    </script>
+	
+</body>
+</html>
