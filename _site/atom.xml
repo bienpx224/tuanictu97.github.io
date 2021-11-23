@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+ <title>Hà Anh Tuấn - Blog</title>
+ <link href="http://tuanictu97.github.io/atom.xml" rel="self"/>
+ <link href="http://tuanictu97.github.io/"/>
+ <updated>2021-11-23T13:22:05+03:00</updated>
+ <id>http://tuanictu97.github.io</id>
+ <author>
+   <name>Hà Anh Tuấn</name>
+   <email>tuanictu97@gmail.com</email>
+ </author>
+
+ 
+ <entry>
+   <title>How to Install Gitea on Ubuntu 20.04</title>
+   <link href="http://tuanictu97.github.io/how-to-install-gitea-on-ubuntu-20-04/"/>
+   <updated>2021-02-09T03:00:00+03:00</updated>
+   <id>http://tuanictu97.github.io/install-gitea-ubuntu</id>
+   <content type="html">&lt;p&gt;Gitea is a fast and easy-to-use self-hosted git server written in Go. It includes a repository file editor, project issue tracking, user management, notifications, built-in wiki, and much more.&lt;/p&gt;
+
+&lt;p&gt;Gitea is a lightweight application and can be installed on low-powered systems. If you are searching for an alternative to Gitlab with a much smaller memory footprint and you don’t need all the bells and whistles that Gitlab offers, then you should give a try to Gitea.
+This article explains how to install and configure Gitea on Ubuntu 20.04.&lt;/p&gt;
+
+&lt;h2 id=&quot;prerequisites&quot;&gt;Prerequisites&lt;/h2&gt;
+
+&lt;p&gt;Gitea supports SQLite, PostgreSQL , and MySQL /MariaDB as database backends.&lt;/p&gt;
+
+&lt;p&gt;SQLite is only recommended for small installations. Larger installations should use MySQL or PostgreSQL.&lt;/p&gt;
+
+&lt;p&gt;We’ll use SQLite as the database for Gitea. If SQLite is not installed on your Ubuntu system, install it by entering the following commands as sudo user :&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt update
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;sqlite3
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;installing-gitea&quot;&gt;Installing Gitea&lt;/h2&gt;
+&lt;p&gt;Gitea provides Docker images and can be installed from source, binary, and as a package. We’ll install Gitea from binary.&lt;/p&gt;
+
+&lt;h3 id=&quot;install-git&quot;&gt;Install Git&lt;/h3&gt;
+&lt;p&gt;The first step is to install Git on your server:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt update
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;git
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Verify the installation by displaying the Git version:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git &lt;span class=&quot;nt&quot;&gt;--version&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;create-a-git-user&quot;&gt;Create a Git user&lt;/h3&gt;
+&lt;p&gt;Create a new system user which will run the Gitea application by typing:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;adduser &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+   &lt;span class=&quot;nt&quot;&gt;--system&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+   &lt;span class=&quot;nt&quot;&gt;--shell&lt;/span&gt; /bin/bash &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+   &lt;span class=&quot;nt&quot;&gt;--gecos&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Git Version Control'&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+   &lt;span class=&quot;nt&quot;&gt;--group&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+   &lt;span class=&quot;nt&quot;&gt;--disabled-password&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+   &lt;span class=&quot;nt&quot;&gt;--home&lt;/span&gt; /home/git &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+   git
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;download-gitea-binary&quot;&gt;Download Gitea binary&lt;/h3&gt;
+&lt;p&gt;Head over to the Gitea Download page and download the latest binary for your architecture. At the time of writing, the latest version is 1.10.2. If there is a new version available, change the VERSION variable in the command below.
+Use wget to download the Gitea binary in the /tmp directory:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;VERSION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1.14.1
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;wget &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; /tmp/gitea https://dl.gitea.io/gitea/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;VERSION&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/gitea-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;VERSION&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-linux-amd64&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You can run the gitea binary from any location. We’ll follow the convention and move the binary to the /usr/local/bin directory:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo mv&lt;/span&gt; /tmp/gitea /usr/local/bin
+&lt;span class=&quot;nb&quot;&gt;sudo chmod&lt;/span&gt; +x /usr/local/bin/gitea
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Run the commands below to create the directories and set the required permissions and ownership :&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; /var/lib/gitea/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;custom,data,log&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo chown&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-R&lt;/span&gt; git:git /var/lib/gitea/
+&lt;span class=&quot;nb&quot;&gt;sudo chmod&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-R&lt;/span&gt; 750 /var/lib/gitea/
+&lt;span class=&quot;nb&quot;&gt;sudo mkdir&lt;/span&gt; /etc/gitea
+&lt;span class=&quot;nb&quot;&gt;sudo chown &lt;/span&gt;root:git /etc/gitea
+&lt;span class=&quot;nb&quot;&gt;sudo chmod &lt;/span&gt;770 /etc/gitea
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;run-gitea-as-a-service&quot;&gt;Run gitea as a Service&lt;/h3&gt;
+&lt;p&gt;You can run Gitea as service, using either systemd or supervisor. The steps below tested on Ubuntu 20.04, but those should work on any Linux distributions (with little modification).&lt;/p&gt;
+&lt;h4 id=&quot;using-systemd&quot;&gt;Using systemd&lt;/h4&gt;
+&lt;p&gt;We’ll run Gitea as a systemd service.&lt;/p&gt;
+
+&lt;p&gt;Download the sample systemd unit file to the /etc/systemd/system directory by typing:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;wget https://raw.githubusercontent.com/go-gitea/gitea/main/contrib/systemd/gitea.service &lt;span class=&quot;nt&quot;&gt;-P&lt;/span&gt; /etc/systemd/system/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You don’t need to edit the file, it is configured to match our setup.
+Enable and start the Gitea service:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl daemon-reload
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--now&lt;/span&gt; gitea
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Verify that Gitea is running:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl status gitea
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;using-supervisor&quot;&gt;Using supervisor&lt;/h4&gt;
+&lt;p&gt;Install supervisor by running below command in terminal:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;supervisor
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Create a log dir for the supervisor logs:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# assuming Gitea is installed in /home/git/gitea/&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /home/git/gitea/log/supervisor
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Append the configuration from the sample supervisord config to /etc/supervisor/supervisord.conf.&lt;/p&gt;
+
+&lt;p&gt;Using your favorite editor, change the user (git) and home (/home/git) settings to match the deployment environment. Change the PORT or remove the -p flag if default port is used.&lt;/p&gt;
+
+&lt;p&gt;Lastly enable and start supervisor at boot:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;supervisor
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl start supervisor
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If you have systemd version 220 or later, you can enable and immediately start supervisor by:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;supervisor &lt;span class=&quot;nt&quot;&gt;--now&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Good luck =)) !&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>How to Set up a Reverse Proxy (Step-By-Steps for Nginx and Apache)</title>
+   <link href="http://tuanictu97.github.io/how-to-set-up-a-reverse-proxy-step-by-steps-for-nginx-and-apache/"/>
+   <updated>2019-01-01T03:00:00+03:00</updated>
+   <id>http://tuanictu97.github.io/how-to-set-up-a-reverse-proxy-step-by-steps-for-nginx-and-apache</id>
+   <content type="html">&lt;p&gt;A reverse proxy sits in front of a web server and receives all the requests before they reach the origin server. It works similarly to a forward proxy, except in this case it’s the web server using the proxy rather than the user or client. Reverse proxies are typically used to enhance performance, security, and reliability of the web server.&lt;/p&gt;
+
+&lt;p&gt;Try a free demo
+For example, you can have a non-WordPress site hosted at example.com domain on Server A and have its blog running on WordPress at example.com/blog URL hosted on Server B. You can achieve this by adding a reverse proxy for the server hosting your primary site. You can configure the reverse proxy to redirect requests to the blog to a different server (e.g. a managed WordPress host like Kinsta).&lt;/p&gt;
+
+&lt;p&gt;In this article, you’ll learn the basics of reverse proxy servers, how they work, what their major benefits are, and how you can use them to speed up and secure your WordPress site.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-is-a-reverse-proxy&quot;&gt;What Is a Reverse Proxy?&lt;/h2&gt;
+
+&lt;p&gt;To understand what a reverse proxy server is, you need first to know its role and get familiar with all its related terms.&lt;/p&gt;
+
+&lt;p&gt;When you browse the web normally by entering a domain name or clicking a link, your browser/device connects to the website’s server directly and starts downloading its resources.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/how-internet-browsing-works-normally.png&quot; alt=&quot;How Internet Browsing Works Normally&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you want to anonymize your IP address from the websites you visit, then you can use a proxy server to send all your requests to it first. It’ll forward your requests to the DNS resolver and then download the website’s resources from its origin server.&lt;/p&gt;
+
+&lt;p&gt;Afterward, it’ll pass on those resources to your device. This is called a forward proxy.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/how-a-forward-proxy-server-works.png&quot; alt=&quot;How a Fozrward Proxy Server Works&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;reverse-proxy-server-vs-forward-proxy-server&quot;&gt;Reverse Proxy Server vs Forward Proxy Server&lt;/h2&gt;
+&lt;p&gt;A reverse proxy server acts as a front for the origin server to maintain anonymity and enhance security, just like how a user/client can use a forward proxy to achieve the same. It ensures that no user or client communicates directly with the origin server.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/how-a-reverse-proxy-server-works.png&quot; alt=&quot;How a Reverse Proxy Server Works&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The difference between a forward proxy vs a reverse proxy is minor, but they work differently.&lt;/p&gt;
+
+&lt;p&gt;Both can work together as there’s no overlap between their functioning. Typically, users/clients use a forward proxy, while origin servers use a reverse proxy.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/how-a-reverse-proxy-server-works.png&quot; alt=&quot;How a Reverse Proxy Server Works&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Since a server admin can control how the reverse proxy works, you can use it to enable many useful features.&lt;/p&gt;
+
+&lt;p&gt;We’ll list all its benefits later in this post.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-use-a-reverse-proxy&quot;&gt;Why Use a Reverse Proxy?&lt;/h2&gt;
+&lt;p&gt;Many businesses, especially large enterprises, use bespoke websites that are tailor-made to their unique needs and aren’t running on WordPress. Some examples include bank and insurance websites.&lt;/p&gt;
+
+&lt;p&gt;In other cases, a business may host their site on an external service that doesn’t allow them to install any external software (e.g. WordPress). Usually, these are small to mid-sized retailers using an ecommerce platform such as Shopify.&lt;/p&gt;
+
+&lt;p&gt;Since WordPress has robust CMS features, many businesses, including large enterprises with bespoke websites, may prefer to host their blogs using WordPress.&lt;/p&gt;
+
+&lt;p&gt;One way to get around this problem is to install WordPress on the main website’s subdomain and structure the navigation menus such that users can switch easily between the main website and the blog.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/how-a-reverse-proxy-server-works.png&quot; alt=&quot;Subdomain vs Subdirectory for WordPress Blogs&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Since subdomains behave as a unique domain, it can affect your site’s SEO. Even though Google treats both subdomains and subdirectories equally, it takes more effort to optimize a website for search engine rankings if it’s hosted on a subdomain than if it’s hosted in a subdirectory.&lt;/p&gt;
+
+&lt;p&gt;Google has reaffirmed that it treats both subdomains and subdirectories equally, but some SEO experts disagree with it. And even if it doesn’t affect the site’s SEO, a site hosted in a subdirectory is simply easier to maintain.&lt;/p&gt;
+
+&lt;p&gt;That’s why you can use a reverse proxy to redirect requests to the site’s blog hosted on a separate server.&lt;/p&gt;
+</content>
+ </entry>
+ 
+
+</feed>
