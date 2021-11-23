@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
  <title>Hà Anh Tuấn - Blog</title>
- <link href="http://localhost:4000/atom.xml" rel="self"/>
- <link href="http://localhost:4000/"/>
- <updated>2021-11-22T19:14:41+03:00</updated>
- <id>http://localhost:4000</id>
+ <link href="http://tuanictu97.github.io/atom.xml" rel="self"/>
+ <link href="http://tuanictu97.github.io/"/>
+ <updated>2021-11-23T13:22:05+03:00</updated>
+ <id>http://tuanictu97.github.io</id>
  <author>
    <name>Hà Anh Tuấn</name>
    <email>tuanictu97@gmail.com</email>
@@ -14,9 +14,9 @@
  
  <entry>
    <title>How to Install Gitea on Ubuntu 20.04</title>
-   <link href="http://localhost:4000/how-to-install-gitea-on-ubuntu-20-04/"/>
+   <link href="http://tuanictu97.github.io/how-to-install-gitea-on-ubuntu-20-04/"/>
    <updated>2021-02-09T03:00:00+03:00</updated>
-   <id>http://localhost:4000/install-gitea-ubuntu</id>
+   <id>http://tuanictu97.github.io/install-gitea-ubuntu</id>
    <content type="html">&lt;p&gt;Gitea is a fast and easy-to-use self-hosted git server written in Go. It includes a repository file editor, project issue tracking, user management, notifications, built-in wiki, and much more.&lt;/p&gt;
 
 &lt;p&gt;Gitea is a lightweight application and can be installed on low-powered systems. If you are searching for an alternative to Gitlab with a much smaller memory footprint and you don’t need all the bells and whistles that Gitlab offers, then you should give a try to Gitea.
@@ -126,9 +126,9 @@ Enable and start the Gitea service:&lt;/p&gt;
  
  <entry>
    <title>How to Set up a Reverse Proxy (Step-By-Steps for Nginx and Apache)</title>
-   <link href="http://localhost:4000/how-to-set-up-a-reverse-proxy-step-by-steps-for-nginx-and-apache/"/>
+   <link href="http://tuanictu97.github.io/how-to-set-up-a-reverse-proxy-step-by-steps-for-nginx-and-apache/"/>
    <updated>2019-01-01T03:00:00+03:00</updated>
-   <id>http://localhost:4000/how-to-set-up-a-reverse-proxy-step-by-steps-for-nginx-and-apache</id>
+   <id>http://tuanictu97.github.io/how-to-set-up-a-reverse-proxy-step-by-steps-for-nginx-and-apache</id>
    <content type="html">&lt;p&gt;A reverse proxy sits in front of a web server and receives all the requests before they reach the origin server. It works similarly to a forward proxy, except in this case it’s the web server using the proxy rather than the user or client. Reverse proxies are typically used to enhance performance, security, and reliability of the web server.&lt;/p&gt;
 
 &lt;p&gt;Try a free demo
