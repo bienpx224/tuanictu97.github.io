@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en-US" data-theme="light">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>C++ JNI jstring to string (utf16 to utf8) - Hà Anh Tuấn - Blog</title>
+		<meta name="description" content="Hà Anh Tuấn - Blog">
+		<meta name="keywords" content="cppjniandroid">
+		<base href="https://tuanictu97.github.io" />
+		
+    	<meta content="2021-09-09T03:00:00+03:00" property="article:published_time">
+    	<meta content="https://tuanictu97.github.io/about/" property="article:author">
+  		
+		<meta property="og:site_name" content="Hà Anh Tuấn - Blog">
+		<meta property="og:type" content="article" />
+		<meta property="og:url" content="https://tuanictu97.github.io/c-jni-jstring-to-string-utf16-to-utf8/"/>
+		<meta property="og:title" content="C++ JNI jstring to string (utf16 to utf8) - Hà Anh Tuấn - Blog" />
+		<meta property="og:description" content="Hà Anh Tuấn - Blog" />
+		<meta property="og:image" content="https://tuanictu97.github.io/assets/images/favicon.png"/>
+		<meta name="twitter:card" content="summary"/>
+		<meta property="twitter:title" content="C++ JNI jstring to string (utf16 to utf8) - Hà Anh Tuấn - Blog" />
+		<meta property="twitter:description" content="Hà Anh Tuấn - Blog" />
+		<meta property="twitter:image" content="https://tuanictu97.github.io/assets/images/favicon.png" />
+		<link rel="stylesheet" href="assets/css/highlight.css">
+		<link rel="stylesheet" href="assets/css/style.css">
+		<link rel="shortcut icon" href="assets/images/favicon.png" />
+		<link rel="alternate" type="application/atom+xml" title="Hà Anh Tuấn - Blog" href="https://tuanictu97.github.io/atom.xml">
+		<link rel="alternate" type="application/json" title="Hà Anh Tuấn - Blog" href="https://tuanictu97.github.io/feed.json" />
+		<link rel="sitemap" type="application/xml" title="sitemap" href="https://tuanictu97.github.io/sitemap.xml" />
+		<meta name="google-site-verification" content="XXX" />
+		<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+	</head>
+<body>
+<div class="container">
+	<div class="profile">
+		<a href="https://tuanictu97.github.io"><img src="assets/images/profile.jpg" class="profile-image"></a>
+		<div class="profile-about">
+			<h2 style="margin-bottom: 0; font-weight: 700;">Hà Anh Tuấn</h2>
+			
+				<a href="https://facebook.com/tuanictu97" target="_blank"><img src="assets/images/icon/facebook.svg" class="social-icon"></a>
+			
+			
+				<a href="https://twitter.com/tuanictu97" target="_blank"><img src="assets/images/icon/twitter.svg" class="social-icon"></a>
+			
+			
+				<a href="https://instagram.com/tuanict97" target="_blank"><img src="assets/images/icon/instagram.svg" class="social-icon"></a>
+			
+			
+			
+				<a href="https://github.com/tuanictu97" target="_blank"><img src="assets/images/icon/github.svg" class="social-icon"></a>
+			
+			
+				<a href="https://linkedin.com/in/tuanict97" target="_blank"><img src="assets/images/icon/linkedin.svg" class="social-icon"></a>
+			
+			<a href="about"><img src="assets/images/icon/me.svg" class="social-icon"></a>
+			<br>
+			Nothing !
+			<br>
+			<div class="mode" id="mode-switcher" onclick="toggleNightMode();">
+				<span></span>
+			</div>
+		</div>
+	</div>
+	
+<div class="post-header">
+	<div class="post-date">09.09.2021</div>
+	<div class="post-share">
+		Share:&nbsp; 
+		<a href="https://www.facebook.com/sharer/sharer.php?u=https://tuanictu97.github.io/webrtc-vad copy" target="_blank"><img src="assets/images/icon/facebook.svg" class="social-icon"></a>
+		<a href="https://twitter.com/intent/tweet?source=tweetbutton&amp;original_referer=https://tuanictu97.github.io/webrtc-vad copy&amp;text=C++ JNI jstring to string (utf16 to utf8) - https://tuanictu97.github.io/webrtc-vad copy" target="_blank"><img src="assets/images/icon/twitter.svg" class="social-icon"></a>
+		<a href="https://api.whatsapp.com/send?text=https://tuanictu97.github.io/webrtc-vad copy" target="_blank"><img src="assets/images/icon/whatsapp.svg" class="social-icon"></a>
+	</div>
+</div>
+
+<div class="blog-post-content">
+	<h1>C++ JNI jstring to string (utf16 to utf8)</h1>
+	<p>JNI in jstring Transcoding to std::string In fact, that is utf16 The process of transcoding to the code of your choice , Because of me C++ Procedures need to be used utf8, So here I turn to utf8
+The transcoding library used is <a href="https://github.com/nemtrif/utfcpp">utfcpp</a>
+The way to use this library is to download source Everything in the folder , then #include “utf8.h” In your project</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">Tools</span><span class="o">::</span><span class="n">jstring2str</span><span class="p">(</span><span class="n">jstring</span> <span class="n">jStr</span><span class="p">,</span> <span class="n">JNIEnv</span><span class="o">*</span> <span class="n">env</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">jStr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Warning :kotlin Partially returns an empty string </span>
+        <span class="k">return</span> <span class="s">""</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">u16string</span> <span class="n">s</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">char16_t</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">env</span><span class="o">-&gt;</span><span class="n">GetStringChars</span><span class="p">(</span><span class="n">jStr</span><span class="p">,</span> <span class="nb">nullptr</span><span class="p">));</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Warning :kotlin Partially returns an empty string </span>
+        <span class="k">return</span> <span class="s">""</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">x</span><span class="p">;</span>
+    <span class="n">utf8</span><span class="o">::</span><span class="n">utf16to8</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">s</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">std</span><span class="o">::</span><span class="n">back_inserter</span><span class="p">(</span><span class="n">x</span><span class="p">));</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">jstring</span> <span class="nf">str2jstring</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">stra</span><span class="p">,</span> <span class="n">JNIEnv</span><span class="o">*</span> <span class="n">env</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">stra</span><span class="p">){</span>
+        <span class="c1">// Warning :C++ Partially pass in an empty string </span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">str</span><span class="p">(</span><span class="n">stra</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">short</span><span class="o">&gt;</span> <span class="n">utf16line</span><span class="p">;</span>
+    <span class="n">utf8</span><span class="o">::</span><span class="n">utf8to16</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">str</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">std</span><span class="o">::</span><span class="n">back_inserter</span><span class="p">(</span><span class="n">utf16line</span><span class="p">));</span>
+    <span class="k">auto</span><span class="o">*</span> <span class="n">c</span> <span class="o">=</span> <span class="k">new</span> <span class="n">jchar</span><span class="p">[</span><span class="n">utf16line</span><span class="p">.</span><span class="n">size</span><span class="p">()];</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">utf16line</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">utf16line</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">env</span><span class="o">-&gt;</span><span class="n">NewString</span><span class="p">((</span><span class="k">const</span> <span class="n">jchar</span><span class="o">*</span><span class="p">)</span><span class="n">c</span><span class="p">,</span> <span class="p">(</span><span class="n">jsize</span><span class="p">)</span><span class="n">utf16line</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>The implementation ideas can be referred to <a href="https://stackoverflow.com/questions/32205446/getting-true-utf-8-characters-in-java-jni">https://stackoverflow.com/questions/32205446/getting-true-utf-8-characters-in-java-jni</a></p>
+
+<p>The main thing is if you use jni Transcoding of , What’s changing is jni Modified special utf8, So there are several ideas , One of them is to take utf16 code , Then transcode by yourself.</p>
+
+<p>At the same time, we can also refer to Google’s practice: <a href="https://chromium.googlesource.com/chromium/src/base/+/refs/heads/main/android/jni_string.cc#27">https://chromium.googlesource.com/chromium/src/base/+/refs/heads/main/android/jni_string.cc#27</a></p>
+
+<p>Good luck =)) !</p>
+
+</div>
+<div class="tags-container">
+	
+		<a href="https://tuanictu97.github.io/tags/#cpp" class="post-tag">cpp</a>, 
+	
+		<a href="https://tuanictu97.github.io/tags/#jni" class="post-tag">jni</a>, 
+	
+		<a href="https://tuanictu97.github.io/tags/#android" class="post-tag">android</a>
+	
+</div>
+<div class="navigation">
+	
+		<a class="prev" href="/how-to-install-gitea-on-ubuntu-20-04/">< How to Install Gitea on Ubuntu 20.04</a>
+	 
+</div>
+
+	<section class="comment-area w-100">
+		<div class="comment-wrapper">
+			<div id="disqus_thread" class="article-comments"></div>
+			<script>
+			(function() {
+			var d = document, s = d.createElement('script');
+			s.src = '//XXX.disqus.com/embed.js';
+			s.setAttribute('data-timestamp', +new Date());
+			(d.head || d.body).appendChild(s);
+			})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		</div>
+	</section>
+
+	<div class="footer">
+		<span> © 2021 - <a href="https://tuanictu97.github.io"><b>Hà Anh Tuấn</b></a></span>
+	</div>
+</div>
+	<script src="assets/js/ephesus.js"></script>
+	<script type="text/javascript">
+		if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+			document.documentElement.setAttribute('data-theme', 'dark');
+			document.getElementById('mode-switcher').classList.add('active');
+		}
+	</script>
+
+	
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-00"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-XXXXXXXX-00');
+    </script>
+	
+</body>
+</html>
